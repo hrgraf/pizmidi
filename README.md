@@ -17,3 +17,4 @@ No configuration needed, no GUI, just wire in your VST host this VST plug-in aft
 
 (The expected MIDI CC ID for PresetEnc is 114, for PresetBtn the ID is 115. This is the default configuration at least on my Arturia Laboratory MIDI keyboard.)
 
+Download the Windows 10 VST2 plug-in as either 32-bit or 64-bit DLL (binary) at https://github.com/hrgraf/pizmidi/releases.

@@ -1,2 +1,2 @@
 # pizmidi
-Simple Midi tools based on VST2 SDK and pizmidi framework/examples
+Simple MIDI tools based on VST2 SDK and pizmidi framework/examples

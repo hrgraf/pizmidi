@@ -1,0 +1,11 @@
+# files ignored by git
+
+.vs
+
+Debug
+
+Release/*.iobj
+Release/*.ipdb
+
+midi*/Release
+midi*/*.vcxproj.user

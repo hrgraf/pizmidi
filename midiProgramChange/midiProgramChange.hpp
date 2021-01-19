@@ -20,11 +20,11 @@ by Reuben Vinal
 
 enum
 {
-    kMirror,
     kPower,
 
     kNumParams,
-    kNumPrograms = 16
+    kNumMidiCh = 16,
+    kNumPrograms = 1
 };
 
 class MidiProgramChangeProgram {
@@ -33,7 +33,6 @@ public:
     MidiProgramChangeProgram();
     ~MidiProgramChangeProgram() {}
 private:
-    float fMirror;
     float fPower;
     char name[kVstMaxProgNameLen];
 };
@@ -55,8 +54,9 @@ public:
     virtual void   getParameterName(VstInt32 index, char *text);
 
 protected:
-    float fMirror;
     float fPower;
+
+    short progNum[kNumMidiCh]; // individual for every MIDI channel
 
     virtual void processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec *outputs, VstInt32 sampleFrames);
 

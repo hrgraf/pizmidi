@@ -1,5 +1,18 @@
 #include "MidiProgramChange.hpp"
 
+// Arturia Control Change Constants
+
+#define CC_ID_TURN_CAT          112
+#define CC_ID_PRESS_CAT         113
+#define CC_ID_TURN_PRESET       114
+#define CC_ID_PRESS_PRESET      115
+
+#define CC_VAL_TURN_INC           1
+#define CC_VAL_TURN_DEC          65
+
+#define CC_VAL_PRESS_DOWN       127
+#define CC_VAL_PRESS_RELEASE      0
+
 //-------------------------------------------------------------------------------------------------------
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {
     return new MidiProgramChange(audioMaster);
@@ -20,7 +33,10 @@ MidiProgramChange::MidiProgramChange(audioMasterCallback audioMaster)
 {
     // reset internal state
     for (int i = 0; i < kNumMidiCh; i++)
+    {
         progNum[i] = 0;
+        bankNum[i] = 0;
+    }
 
     programs = new MidiProgramChangeProgram[numPrograms];
 
@@ -145,8 +161,10 @@ void MidiProgramChange::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventV
         //short data1 = me.midiData[1] & 0x7f;
         //short data2 = me.midiData[2] & 0x7f;
 
+        short filter = 0;
         short change = 0;
         short num    = progNum[channel];
+        short bank   = bankNum[channel];
 
         if (status == MIDI_CONTROLCHANGE)
         {
@@ -177,22 +195,63 @@ void MidiProgramChange::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventV
                 }
                 else if (val == CC_VAL_PRESS_RELEASE)
                 {
+                    filter = 1;
+                }
+            }
+            else if (id == CC_ID_TURN_CAT)
+            {
+                if (val == CC_VAL_TURN_INC)
+                {
                     change = 2;
+                    num    = 0;
+                    if (bank < 127)
+                        bank++;
+                }
+                else if (val == CC_VAL_TURN_DEC)
+                {
+                    change = 2;
+                    num = 0;
+                    if (bank > 0)
+                        bank--;
+                }
+            }
+            else if (id == CC_ID_PRESS_CAT)
+            {
+                if (val == CC_VAL_PRESS_DOWN)
+                {
+                    change = 2;
+                    num    = 0;
+                    bank   = 0;
+                }
+                else if (val == CC_VAL_PRESS_RELEASE)
+                {
+                    filter = 1;
                 }
             }
 
             progNum[channel] = num; // write back
+            bankNum[channel] = bank;
         }
 
-        if ((fPower >= 0.5f) && (change == 1))
+        if (change && (fPower >= 0.5f))
         {
+            if (change == 2) // bank change
+            {
+                me.midiData[0] = MIDI_CONTROLCHANGE | channel;
+                me.midiData[1] = MIDI_BANK_CHANGE | MIDI_LSB;
+                me.midiData[2] = bank & 127;
+                me.midiData[3] = 0;
+                outputs[0].push_back(me);
+            }
+
+            // program change
             me.midiData[0] = MIDI_PROGRAMCHANGE | channel;
             me.midiData[1] = num & 127;
             me.midiData[2] = 0;
             me.midiData[3] = 0;
         }
 
-        if (change != 2)
+        if (! filter)
             outputs[0].push_back(me);
     }
 }

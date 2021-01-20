@@ -71,7 +71,7 @@
 #define MIDI_UNDEFINED_CC1E         0x1E
 #define MIDI_UNDEFINED_CC1F         0x1F
 //[0x20:0x3F] are LSBs
-
+#define MIDI_LSB                    0x20
 
 
 #define MIDI_SUSTAIN                0x40

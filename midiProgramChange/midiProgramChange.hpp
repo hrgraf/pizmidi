@@ -1,22 +1,12 @@
 /*-----------------------------------------------------------------------------
 MidiProgramChange
-by Reuben Vinal
+original framework by Reuben Vinal
+specific implementation by H.R.Graf
 -----------------------------------------------------------------------------*/
 #ifndef __MidiProgramChange_H
 #define __MidiProgramChange_H
 
 #include "../common/PizMidi.h"
-
-// Arturia Control Change Constants
-
-#define CC_ID_TURN_PRESET       114
-#define CC_ID_PRESS_PRESET      115
-
-#define CC_VAL_TURN_INC           1
-#define CC_VAL_TURN_DEC          65
-
-#define CC_VAL_PRESS_DOWN       127
-#define CC_VAL_PRESS_RELEASE      0
 
 enum
 {
@@ -57,6 +47,7 @@ protected:
     float fPower;
 
     short progNum[kNumMidiCh]; // individual for every MIDI channel
+    short bankNum[kNumMidiCh]; // individual for every MIDI channel
 
     virtual void processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec *outputs, VstInt32 sampleFrames);
 

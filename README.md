@@ -15,6 +15,10 @@ How to use/operate:
 
 No configuration needed, no GUI, just wire in your VST host this VST plug-in after the Arturia MIDI keyboard.
 
-(The expected MIDI CC ID for PresetEnc is 114, for PresetBtn the ID is 115. This is the default configuration at least on my Arturia Laboratory MIDI keyboard.)
+But what if 128 programs are not enough for you? You need bank select commands. Fortunately, the Arturia MIDI keyboard has a "Category" knob.
+So this VST plug-in maps also the default Arturia MIDI CC commands of the "Category" knob to MIDI bank select commands (7-bit LSB) while keeping track of the absolute bank number.
+
+(The expected MIDI CC ID for CategoryEnc/CategoryBtn/PresetEnc/PresetBtn are 112/113/114/115. This is the default configuration at least on my Arturia Laboratory MIDI keyboard.)
 
 Download the Windows 10 VST2 plug-in as either 32-bit or 64-bit DLL (binary) at https://github.com/hrgraf/pizmidi/releases.
+

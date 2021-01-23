@@ -3,6 +3,17 @@ MidiFromJoystick
 original framework by Reuben Vinal
 specific implementation by H.R.Graf
 -----------------------------------------------------------------------------*/
+
+// No MFC
+#define WIN32_LEAN_AND_MEAN
+
+// We need the Windows Header and the XInput Header
+#include <windows.h>
+#include <XInput.h>
+#include <stdio.h>
+
+#pragma comment(lib, "Xinput.lib")
+
 #include "../common/PizMidi.h"
 
 enum
@@ -184,25 +195,127 @@ void MidiFromJoystick::getParameterDisplay(VstInt32 index, char *text) {
     }
 }
 
+//-----------------------------------------------------------------------------------------
+
+typedef struct JoyNote
+{
+    WORD button;
+    BYTE vel;
+    BYTE key;
+};
+
+static const JoyNote joyNote[] =
+{
+  { XINPUT_GAMEPAD_A             , 0x40, 0x30 }, // C4
+  { XINPUT_GAMEPAD_B             , 0x40, 0x32 }, // D4
+  { XINPUT_GAMEPAD_X             , 0x40, 0x34 }, // E4
+  { XINPUT_GAMEPAD_Y             , 0x40, 0x35 }, // F4
+  { XINPUT_GAMEPAD_DPAD_DOWN     , 0x40, 0x37 }, // G4
+  { XINPUT_GAMEPAD_DPAD_RIGHT    , 0x40, 0x39 }, // A4
+  { XINPUT_GAMEPAD_DPAD_LEFT     , 0x40, 0x3B }, // H4
+  { XINPUT_GAMEPAD_DPAD_UP       , 0x40, 0x3C }, // C5
+  { 0, 0, 0 } // terminator
+};
+
+/*
+XINPUT_GAMEPAD_START,
+XINPUT_GAMEPAD_BACK,
+XINPUT_GAMEPAD_LEFT_THUMB,
+XINPUT_GAMEPAD_RIGHT_THUMB,
+XINPUT_GAMEPAD_LEFT_SHOULDER,
+XINPUT_GAMEPAD_RIGHT_SHOULDER,
+*/
+
+
 void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec *outputs, VstInt32 sampleFrames)
 {
-    // process incoming events (of first input)
-    for (unsigned int i = 0; i < inputs[0].size(); i++) 
+    static DWORD pktNum = 0;
+    static WORD lastButtons = 0;
+    static SHORT lastY = 0;
+    static SHORT progNum = 0;
+
+    XINPUT_STATE state;
+    ZeroMemory(&state, sizeof(XINPUT_STATE));
+
+    if (XInputGetState(0, &state) == ERROR_SUCCESS)
     {
-        //copying event "i" from input (with all its fields)
-        VstMidiEvent me = inputs[0][i];
+        if (state.dwPacketNumber != pktNum) // changed
+        {
+            WORD newButtons = state.Gamepad.wButtons;
 
-        short status = me.midiData[0] & 0xf0;   // scraping  channel
-        short channel = me.midiData[0] & 0x0f;  // isolating channel (0-15)
-        //short data1 = me.midiData[1] & 0x7f;
-        //short data2 = me.midiData[2] & 0x7f;
+            // output enabled
+            if (fPower >= 0.5f)
+            {
+                WORD changed = newButtons ^ lastButtons;
 
-        // modify event
-        channel = FLOAT_TO_CHANNEL015(fChannel); //outgoing midi channel
-        me.midiData[0] = status | (channel & 0x0f);
+                VstMidiEvent me;
+                me.deltaFrames = 0;
 
-        // output event
-        if (fPower >= 0.5f)
-                outputs[0].push_back(me);
+                SHORT channel = FLOAT_TO_CHANNEL015(fChannel) & 0x0F; //outgoing midi channel
+
+                // handle notes
+                for (DWORD i = 0; ; i++)
+                {
+                    JoyNote note = joyNote[i];
+                    DWORD button = note.button;
+                    if (!button) // terminator found
+                        break;
+
+                    if (button & changed)
+                    {
+                        me.midiData[0] = MIDI_NOTEON + channel;
+                        me.midiData[1] = note.key;
+                        me.midiData[2] = (button & newButtons) ? note.vel : 0x00; // velocity
+                        outputs[0].push_back(me);
+                    }
+                }
+
+                // handle program change
+                {
+                    SHORT delta = 0;
+                    if (XINPUT_GAMEPAD_LEFT_SHOULDER & changed & newButtons)
+                        delta = -1;
+                    if (XINPUT_GAMEPAD_RIGHT_SHOULDER & changed & newButtons)
+                        delta = 1;
+                    if (XINPUT_GAMEPAD_START & changed & newButtons)
+                        delta = -128;
+
+                    if (delta)
+                    {
+                        progNum += delta;
+                        if (progNum > 127)
+                            progNum = 127;
+                        if (progNum < 0)
+                            progNum = 0;
+
+                        // program change
+                        me.midiData[0] = MIDI_PROGRAMCHANGE | channel;
+                        me.midiData[1] = progNum & 0x7F;
+                        me.midiData[2] = 0;
+                        outputs[0].push_back(me);
+                    }
+                }
+
+
+                // handle controllers
+                SHORT y = state.Gamepad.sThumbLY / 4; // 14bit
+                if ((y < 10) && (y > -10))
+                    y = 0;
+                y += (0x40<<7); // zero offset
+                if (y != lastY)
+                {
+                    me.midiData[0] = MIDI_PITCHBEND + channel;
+                    me.midiData[1] =  y       & 0x7F; // lsb
+                    me.midiData[2] = (y >> 7) & 0x7F; //msb
+                    outputs[0].push_back(me);
+                }
+                lastY = y;
+
+            }
+
+            lastButtons = newButtons;
+        }
     }
 }
+
+//-----------------------------------------------------------------------------------------

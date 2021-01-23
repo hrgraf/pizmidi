@@ -5,7 +5,7 @@
 #define PLUG_AUDIO_OUTPUTS	0
 #define PLUG_FORCE_EFFECT	0
 #define PLUG_FORCE_INST		0
-#define PLUG_NAME			"midiProgramChange"
-#define PLUG_IDENT			'mPrg'
+#define PLUG_NAME			"midiUnifyChannel"
+#define PLUG_IDENT			'mUni'
 #define PLUG_VENDOR			"hrgraf"
 #define PLUG_VERSION		0x10200

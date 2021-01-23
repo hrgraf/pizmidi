@@ -27,10 +27,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FD0BFFCC-B763-4CA5-920A-62AE4E0E38AE}</ProjectGuid>
-    <RootNamespace>again</RootNamespace>
+    <ProjectGuid>{9427877e-b208-4c75-a9c3-539d275c7727}</ProjectGuid>
+    <RootNamespace>midiUnifyChannel</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <ProjectName>midiUnifyChannel</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Inst|Win32'" Label="Configuration">
@@ -267,7 +268,7 @@
   <ItemGroup>
     <ClCompile Include="..\common\PizMidi.cpp" />
     <ClCompile Include="..\common\vstplugmain.cpp" />
-    <ClCompile Include="midiProgramChange.cpp" />
+    <ClCompile Include="midiUnifyChannel.cpp" />
     <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffect.cpp" />
     <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffectx.cpp" />
   </ItemGroup>

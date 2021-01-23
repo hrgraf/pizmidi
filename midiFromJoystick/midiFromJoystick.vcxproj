@@ -27,8 +27,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FD0BFFCC-B763-4CA5-920A-62AE4E0E38AE}</ProjectGuid>
-    <RootNamespace>again</RootNamespace>
+    <ProjectGuid>{5b127957-b309-4469-b567-851f109c24b1}</ProjectGuid>
+    <RootNamespace>midiFromJoystick</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -267,7 +267,7 @@
   <ItemGroup>
     <ClCompile Include="..\common\PizMidi.cpp" />
     <ClCompile Include="..\common\vstplugmain.cpp" />
-    <ClCompile Include="midiProgramChange.cpp" />
+    <ClCompile Include="midiFromJoystick.cpp" />
     <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffect.cpp" />
     <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffectx.cpp" />
   </ItemGroup>

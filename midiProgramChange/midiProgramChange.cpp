@@ -1,20 +1,62 @@
-#include "MidiProgramChange.hpp"
+/*-----------------------------------------------------------------------------
+MidiProgramChange
+original framework by Reuben Vinal
+specific implementation by H.R.Graf
+-----------------------------------------------------------------------------*/
+#include "../common/PizMidi.h"
 
-// Arturia Control Change Constants
+enum
+{
+    kPower,
 
-#define CC_ID_TURN_CAT          112
-#define CC_ID_PRESS_CAT         113
-#define CC_ID_TURN_PRESET       114
-#define CC_ID_PRESS_PRESET      115
+    kNumParams,
+    kNumMidiCh = 16,
+    kNumPrograms = 1 // built-in configuration for Arturia MIDI keyboards
+};
 
-#define CC_VAL_TURN_INC           1
-#define CC_VAL_TURN_DEC          65
+//-----------------------------------------------------------------------------
+class MidiProgramChangeProgram 
+{
+    friend class MidiProgramChange;
+public:
+    MidiProgramChangeProgram();
+    ~MidiProgramChangeProgram() {}
+private:
+    float fPower;
+    char name[kVstMaxProgNameLen];
+};
 
-#define CC_VAL_PRESS_DOWN       127
-#define CC_VAL_PRESS_RELEASE      0
+//-----------------------------------------------------------------------------
+class MidiProgramChange : public PizMidi
+{
+public:
+    MidiProgramChange(audioMasterCallback audioMaster);
+    ~MidiProgramChange();
+
+    virtual void   setProgram(VstInt32 program);
+    virtual void   setProgramName(char *name);
+    virtual void   getProgramName(char *name);
+    virtual bool   getProgramNameIndexed(VstInt32 category, VstInt32 index, char* text);
+
+    virtual void   setParameter(VstInt32 index, float value);
+    virtual float  getParameter(VstInt32 index);
+    virtual void   getParameterDisplay(VstInt32 index, char *text);
+    virtual void   getParameterName(VstInt32 index, char *text);
+
+protected:
+    float fPower;
+
+    short progNum[kNumMidiCh]; // individual for every MIDI channel
+    short bankNum[kNumMidiCh]; // individual for every MIDI channel
+
+    virtual void processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec *outputs, VstInt32 sampleFrames);
+
+    MidiProgramChangeProgram *programs;
+};
 
 //-------------------------------------------------------------------------------------------------------
-AudioEffect* createEffectInstance(audioMasterCallback audioMaster) {
+AudioEffect* createEffectInstance(audioMasterCallback audioMaster) 
+{
     return new MidiProgramChange(audioMaster);
 }
 
@@ -72,7 +114,8 @@ MidiProgramChange::MidiProgramChange(audioMasterCallback audioMaster)
 
 
 //-----------------------------------------------------------------------------------------
-MidiProgramChange::~MidiProgramChange() {
+MidiProgramChange::~MidiProgramChange() 
+{
     if (programs) 
         delete[] programs;
 }
@@ -110,8 +153,8 @@ bool MidiProgramChange::getProgramNameIndexed(VstInt32 category, VstInt32 index,
 }
 
 //-----------------------------------------------------------------------------------------
-void MidiProgramChange::setParameter(VstInt32 index, float value) {
-
+void MidiProgramChange::setParameter(VstInt32 index, float value) 
+{
     MidiProgramChangeProgram* ap = &programs[curProgram];
 
     switch (index) {
@@ -120,7 +163,8 @@ void MidiProgramChange::setParameter(VstInt32 index, float value) {
 }
 
 //-----------------------------------------------------------------------------------------
-float MidiProgramChange::getParameter(VstInt32 index) {
+float MidiProgramChange::getParameter(VstInt32 index) 
+{
     float v = 0;
 
     switch (index) {
@@ -130,14 +174,16 @@ float MidiProgramChange::getParameter(VstInt32 index) {
 }
 
 //-----------------------------------------------------------------------------------------
-void MidiProgramChange::getParameterName(VstInt32 index, char *label) {
+void MidiProgramChange::getParameterName(VstInt32 index, char *label) 
+{
     switch (index) {
     case kPower:    strcpy(label, "Power");       break;
     }
 }
 
 //-----------------------------------------------------------------------------------------
-void MidiProgramChange::getParameterDisplay(VstInt32 index, char *text) {
+void MidiProgramChange::getParameterDisplay(VstInt32 index, char *text) 
+{
     switch (index) {
     case kPower:
         if (fPower < 0.5f) 
@@ -147,6 +193,21 @@ void MidiProgramChange::getParameterDisplay(VstInt32 index, char *text) {
         break;
     }
 }
+
+//-----------------------------------------------------------------------------
+// Arturia Control Change Constants
+
+#define CC_ID_TURN_CAT          112
+#define CC_ID_PRESS_CAT         113
+#define CC_ID_TURN_PRESET       114
+#define CC_ID_PRESS_PRESET      115
+
+#define CC_VAL_TURN_INC           1
+#define CC_VAL_TURN_DEC          65
+
+#define CC_VAL_PRESS_DOWN       127
+#define CC_VAL_PRESS_RELEASE      0
+
 
 void MidiProgramChange::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec *outputs, VstInt32 sampleFrames)
 {
@@ -255,3 +316,5 @@ void MidiProgramChange::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventV
             outputs[0].push_back(me);
     }
 }
+
+//-----------------------------------------------------------------------------

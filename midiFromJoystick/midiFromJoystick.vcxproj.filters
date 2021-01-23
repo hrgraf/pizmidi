@@ -16,9 +16,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="midiProgramChange.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\vstsdk2.4\public.sdk\source\vst2.x\audioeffect.cpp">
       <Filter>Source Files\vst2.x</Filter>
     </ClCompile>
@@ -30,6 +27,9 @@
     </ClCompile>
     <ClCompile Include="..\common\PizMidi.cpp">
       <Filter>Source Files\PizMidi</Filter>
+    </ClCompile>
+    <ClCompile Include="midiFromJoystick.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.1267
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "midiProgramChange", "midiProgramChange\midiProgramChange.vcxproj", "{FD0BFFCC-B763-4CA5-920A-62AE4E0E38AE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "midiFromJoystick", "midiFromJoystick\midiFromJoystick.vcxproj", "{5B127957-B309-4469-B567-851F109C24B1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "midiUnifyChannel", "midiUnifyChannel\midiUnifyChannel.vcxproj", "{9427877E-B208-4C75-A9C3-539D275C7727}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -27,6 +31,30 @@ Global
 		{FD0BFFCC-B763-4CA5-920A-62AE4E0E38AE}.Release|Win32.Build.0 = Release|Win32
 		{FD0BFFCC-B763-4CA5-920A-62AE4E0E38AE}.Release|x64.ActiveCfg = Release|x64
 		{FD0BFFCC-B763-4CA5-920A-62AE4E0E38AE}.Release|x64.Build.0 = Release|x64
+		{5B127957-B309-4469-B567-851F109C24B1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5B127957-B309-4469-B567-851F109C24B1}.Debug|Win32.Build.0 = Debug|Win32
+		{5B127957-B309-4469-B567-851F109C24B1}.Debug|x64.ActiveCfg = Debug|x64
+		{5B127957-B309-4469-B567-851F109C24B1}.Debug|x64.Build.0 = Debug|x64
+		{5B127957-B309-4469-B567-851F109C24B1}.Inst|Win32.ActiveCfg = Inst|Win32
+		{5B127957-B309-4469-B567-851F109C24B1}.Inst|Win32.Build.0 = Inst|Win32
+		{5B127957-B309-4469-B567-851F109C24B1}.Inst|x64.ActiveCfg = Inst|x64
+		{5B127957-B309-4469-B567-851F109C24B1}.Inst|x64.Build.0 = Inst|x64
+		{5B127957-B309-4469-B567-851F109C24B1}.Release|Win32.ActiveCfg = Release|Win32
+		{5B127957-B309-4469-B567-851F109C24B1}.Release|Win32.Build.0 = Release|Win32
+		{5B127957-B309-4469-B567-851F109C24B1}.Release|x64.ActiveCfg = Release|x64
+		{5B127957-B309-4469-B567-851F109C24B1}.Release|x64.Build.0 = Release|x64
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Debug|Win32.Build.0 = Debug|Win32
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Debug|x64.ActiveCfg = Debug|x64
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Debug|x64.Build.0 = Debug|x64
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Inst|Win32.ActiveCfg = Inst|Win32
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Inst|Win32.Build.0 = Inst|Win32
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Inst|x64.ActiveCfg = Inst|x64
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Inst|x64.Build.0 = Inst|x64
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Release|Win32.ActiveCfg = Release|Win32
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Release|Win32.Build.0 = Release|Win32
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Release|x64.ActiveCfg = Release|x64
+		{9427877E-B208-4C75-A9C3-539D275C7727}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

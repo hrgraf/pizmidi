@@ -37,4 +37,6 @@ If your Joystick/Gamepad/Game controller is not XInput compatible, use the free 
 
 ## Download / install
 Download the Windows 10 VST2 plug-ins as either 32-bit or 64-bit DLL (binary) at https://github.com/hrgraf/pizmidi/releases.
+Copy the DLL and the .ini file to your VST Plug-in directory (for 64-bit e.g. to C:\Program Files\VSTPlugins).
+Use your favorite DAW, or any VST host, e.g. the free VSTHost or SAVIHost.
 

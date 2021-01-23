@@ -32,7 +32,12 @@ So this VST plug-in maps also the default Arturia MIDI CC commands of the "Categ
 
 ## midiFromJoystick (translates XInput to MIDI)
 Use your Joystick/Gamepad/Game controller to generate MIDI events (Note On/Off, Pitch Bench, Sustain, Portamento, Expression Controller, Program Change, Bank Select).
-Proof-of-concept for Xbox360 controllers (XInput).
+
+Proof-of-concept for Xbox360 controllers (XInput) with a hardwired mapping: 
+  * play notes with buttons A/B/X/Y plus the DPAD (8 notes from C4 to C5)
+  * pitch bend with left thumb stick Y-axis
+  * program changes with left shoulder / right shoulder / start button  (to decrement/increment/reset)
+  
 If your Joystick/Gamepad/Game controller is not XInput compatible, use the free and configurable XOutput tool.
 
 ## Download / install

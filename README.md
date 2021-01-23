@@ -1,5 +1,15 @@
 # pizmidi
-Simple MIDI tools based on VST2 SDK and pizmidi framework/examples
+Simple and free MIDI plug-ins based on VST2 SDK and pizmidi framework/examples.
+Without dedicated GUI, but parameters can get edited from the VST host.
+
+Currently includes:
+  * midiUnifyChannel (a simple template for new modules)
+  * midiProgramChange for Arturia MIDI keyboards
+  * midiFromJoystick (translates XInput to MIDI)
+
+## midiUnifyChannel 
+A simple template for new VST plug-ins. 
+Maps all incoming MIDI messages to the selected channel.
 
 ## midiProgramChange for Arturia MIDI keyboards
 This is a program change VST plug-in for Arturia MIDI keyboards. 
@@ -20,5 +30,11 @@ So this VST plug-in maps also the default Arturia MIDI CC commands of the "Categ
 
 (The expected MIDI CC ID for CategoryEnc/CategoryBtn/PresetEnc/PresetBtn are 112/113/114/115. This is the default configuration at least on my Arturia Laboratory MIDI keyboard.)
 
-Download the Windows 10 VST2 plug-in as either 32-bit or 64-bit DLL (binary) at https://github.com/hrgraf/pizmidi/releases.
+## midiFromJoystick (translates XInput to MIDI)
+Use your Joystick/Gamepad/Game controller to generate MIDI events (Note On/Off, Pitch Bench, Sustain, Portamento, Expression Controller, Program Change, Bank Select).
+Proof-of-concept for Xbox360 controllers (XInput).
+If your Joystick/Gamepad/Game controller is not XInput compatible, use the free and configurable XOutput tool.
+
+## Download / install
+Download the Windows 10 VST2 plug-ins as either 32-bit or 64-bit DLL (binary) at https://github.com/hrgraf/pizmidi/releases.
 

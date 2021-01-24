@@ -331,7 +331,7 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
                 if (expr != lastExpr)
                 {
                     me.midiData[0] = MIDI_CONTROLCHANGE + channel;
-                    me.midiData[1] = MIDI_MODULATION_WHEEL;
+                    me.midiData[1] = MIDI_MODULATION_WHEEL; // CC1
                     me.midiData[2] = expr & 0x7F;
                     outputs[0].push_back(me);
                 }

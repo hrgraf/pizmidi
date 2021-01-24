@@ -197,12 +197,12 @@ void MidiFromJoystick::getParameterDisplay(VstInt32 index, char *text) {
 
 //-----------------------------------------------------------------------------------------
 
-typedef struct JoyNote
+typedef struct
 {
     WORD button;
     BYTE vel;
     BYTE key;
-};
+} JoyNote;
 
 static const JoyNote joyNote[] =
 {
@@ -218,21 +218,26 @@ static const JoyNote joyNote[] =
 };
 
 /*
-XINPUT_GAMEPAD_START,
 XINPUT_GAMEPAD_BACK,
 XINPUT_GAMEPAD_LEFT_THUMB,
 XINPUT_GAMEPAD_RIGHT_THUMB,
-XINPUT_GAMEPAD_LEFT_SHOULDER,
-XINPUT_GAMEPAD_RIGHT_SHOULDER,
 */
 
+static inline long linmap(long x, long in_min, long in_max, long out_min, long out_max) 
+{
+    if (x < in_min)
+        return out_min;
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec *outputs, VstInt32 sampleFrames)
 {
     static DWORD pktNum = 0;
-    static WORD lastButtons = 0;
-    static SHORT lastY = 0;
+    static WORD  lastButtons = 0;
     static SHORT progNum = 0;
+    static SHORT lastPitch = 0;
+    static BYTE  lastPress = 0;
+    static BYTE  lastExpr = 0;
 
     XINPUT_STATE state;
     ZeroMemory(&state, sizeof(XINPUT_STATE));
@@ -296,20 +301,41 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
                     }
                 }
 
-
                 // handle controllers
-                SHORT y = state.Gamepad.sThumbLY / 4; // 14bit
-                if ((y < 10) && (y > -10))
-                    y = 0;
-                y += (0x40<<7); // zero offset
-                if (y != lastY)
+                SHORT pitch = state.Gamepad.sThumbLY; // 16bit
+                if (pitch >= 0)
+                    pitch = (SHORT)linmap(pitch, 1024, (1 << 15), 0, (1 << 13));
+                else
+                    pitch = (SHORT)-linmap(-pitch, 1024, (1 << 15), 0, (1 << 13));
+                pitch += (1 << 13); // 14bit, zero offset
+                if (pitch != lastPitch)
                 {
                     me.midiData[0] = MIDI_PITCHBEND + channel;
-                    me.midiData[1] =  y       & 0x7F; // lsb
-                    me.midiData[2] = (y >> 7) & 0x7F; //msb
+                    me.midiData[1] =  pitch       & 0x7F; // lsb
+                    me.midiData[2] = (pitch >> 7) & 0x7F; // msb
                     outputs[0].push_back(me);
                 }
-                lastY = y;
+                lastPitch = pitch;
+
+                BYTE press = state.Gamepad.bRightTrigger / 2; // 7bit
+                if (press != lastPress)
+                {
+                    me.midiData[0] = MIDI_CHANNELPRESSURE + channel;
+                    me.midiData[1] = press & 0x7F;
+                    me.midiData[2] = 0;
+                    outputs[0].push_back(me);
+                }
+                lastPress = press;
+
+                BYTE expr = state.Gamepad.bLeftTrigger / 2; // 7bit
+                if (expr != lastExpr)
+                {
+                    me.midiData[0] = MIDI_CONTROLCHANGE + channel;
+                    me.midiData[1] = MIDI_MODULATION_WHEEL;
+                    me.midiData[2] = expr & 0x7F;
+                    outputs[0].push_back(me);
+                }
+                lastExpr = expr;
 
             }
 

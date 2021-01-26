@@ -249,11 +249,13 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
     static BYTE  lastPress = 0;
     static BYTE  lastExpr = 0;
 
-    static short timeOut = 0;
+    static DWORD timeOut = 0;
     if (timeOut)
     {
-        timeOut--;
-        return;
+        if (GetTickCount() > timeOut)
+            timeOut = 0;
+        else
+            return; // skip
     }
 
     XINPUT_STATE state;
@@ -362,7 +364,7 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
     else
     {
         dbg("XInput Joystick " << (joystick+1) << " not found");
-        timeOut = 2000;
+        timeOut = GetTickCount() + 2000; // 2s
     }
 }
 

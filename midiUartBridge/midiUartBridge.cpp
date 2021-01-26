@@ -334,10 +334,11 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
             curComPort = 0;
         }
 
-        static short timeOut = 0;
+        static DWORD timeOut = 0;
         if (timeOut)
         {
-            timeOut--;
+            if (GetTickCount() > timeOut)
+                timeOut = 0;
         }
         else if (reqComPort) // open requested port
         {
@@ -350,7 +351,7 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
                 me.midiData[0] = MIDI_NOTEOFF | uartChannel; // "Error Message"
                 outputs[0].push_back(me);
 
-                timeOut = 2000;
+                timeOut = GetTickCount() + 2000; // 2s
             }
             else
                 curComPort = reqComPort;

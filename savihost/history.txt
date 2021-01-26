@@ -1,0 +1,423 @@
+SAVIHost Version History
+========================
+
+Before V1.42, SAVIHost's history could only be found on KvR (see 
+  http://www.kvraudio.com/product/savihost-by-hermann-seib/news
+for details); since I can't expect that everyone knows this, I'll keep track
+of the changes here, too.
+You can mentally add "Lots of bug fixes and internal changes" to each list of
+changes; I won't explicitly state that each time :-)
+
+V1.42
+=====
+
+Release Date: 2013-06-25
+Changes:
+- Fixed incompatibility with ReaJS and other PlugIns that don't pass back a
+  chunk before one's been loaded
+- VST3 MIDI Controller -> Parameter ID remapping didn't work correctly
+- added soft clipping
+- added VST Module Architecture distributions
+  (presumably purely an intellectual exercise, no necessity)
+- added PlugIn Editor window support for VST Module Architecture PlugIns.
+  NB: this is limited to the few VSTMA PlugIns I could find on the 'net.
+  If you got others which use additional features of Steinberg's over-the-top
+  XML UI specification, please let me know.
+
+V1.41
+=====
+
+Release Date: 2013-01-07
+Changes:
+- MIDI Transformations from VSTHost have been added.
+- VST3-capable programs use VST SDK 3.5 instead of 3.1.
+
+V1.40
+=====
+
+Release Date: 2011-09-20
+Changes:
+- Incoming MIDI SysEx messages killed the x64 versions.
+- A bad "optimization" killed MME Wave Input device usage.
+
+V1.39
+=====
+
+Release Date: 2011-08-04
+Changes:
+- SSE2 bug cured that caused ghastly noise when the output to a 24-bit sound
+  card needed clipping.
+- "Linear Knob mode" implemented.
+- SAVIHost now contains a VST3.1 host in 32-bit and 64-bit versions.
+
+V1.38
+=====
+
+Release Date: 2011-07-14
+Changes:
+- SAVIHost now comes in 32-bit and 64-bit versions.
+
+V1.37
+=====
+
+Release Date: 2011-04-04
+Changes:
+- Use of SSE(2) when possible and appropriate; doesn't make much difference
+  in SAVIHost.
+
+V1.36
+=====
+
+Release Date: 2010-11-29
+Changes:
+- Wave Player level and Recording level can be adjusted.
+- 1st configured MIDI Input was not opened correctly upon program start -
+  corrected.
+- .fxb bank files are saved in version 2 format now; if this is not wanted,
+  it can be changed by adding a DWORD setting in the registry:
+   HKEY_CURRENT_USER\Software\Seib\<PlugIn>\Settings\BankSaveVersion=1.
+
+V1.35
+=====
+
+Release Date: 2010-11-01
+Changes:
+- just bug fixes
+
+V1.34
+=====
+
+Release Date: 2009-11-26
+Changes:
+- Wave player supports auto-stereo mode for mono files.
+- Can be minimized to system tray.
+
+V1.33
+=====
+
+Release Date: 2009-10-15
+Changes:
+- Can play .mp3 files (using external mpg123 package - see VSTHost
+  documentation for details).
+
+V1.32
+=====
+
+Release Date: 2008-01-17
+Changes:
+- DirectSound support added (works in all Windows versions except Vista).
+- Added /nomme, /nodsound, /noasio command line flags to suppress the use
+  of the corresponding wave I/O method for special environments.
+- Added /noft ("No Fault Tolerance") flag for debugging environments; in this
+  mode, SAVIHost doesn't catch any exception, which eases the detection of
+  badly behaving PlugIns.
+
+V1.31
+=====
+
+Release Date: 2007-07-19
+Changes:
+- Improved exception handling (a classic "Who cares?" under normal conditions).
+- "Autosave Bank" built in; SAVIHost can save the current bank to
+  PlugInName.savihost.fxb in the PlugIn's directory now,
+  if it has write permission there.
+
+
+V1.30
+=====
+
+Release Date: 2007-04-05
+Changes:
+- Bank/program loading made more flexible; if the format of a loaded bank
+  doesn't match the PlugIn settings, a Yes/No message box allows to override
+  the abort (special for new Waldorf Wave 2.V).
+- Plugins that try to set the host's speed (like Tap!) can do that now.
+- Various internal changes & corrections.
+
+V1.29
+=====
+
+Release Date: 2006-10-30
+Changes:
+- Entering registration data in daHornet did not work; corrected.
+- Menus in Zebra 2 did not work; corrected.
+
+
+V1.28
+=====
+
+Release Date: 2006-10-02
+Changes:
+- Stereo Input/Output ASIO Channel Selection corrected.
+- Unused ASIO drivers should be released now.
+- BPM changes can be directly entered on the main toolbar now.
+- "Player Sync" setting finally provides a simple transport control
+  (i.e. the hosts can now tell the plugins that they are playing at
+   a certain position); makes it easier to run sequencer/tracker plugins
+   in an orderly fashion.
+- Finer-grained Priority selection.
+- Wave Player files can be unloaded.
+
+
+V1.27
+=====
+
+Release Date: 2006-06-12
+Changes:
+- When no Wave Input device is loaded, 2 channels of silence are used.
+- I/O Remapping shows more meaningful device channel names.
+- Wave Player had a problem if used without a Wave Input device; corrected.
+- Wave Player has separate Autorepeat settings for playing and rewinding now.
+- PC keyboard can be captured and sent to simulated MIDI keyboard now, even if
+  this doesn't have the focus (or is hidden); can be toggled with F11.
+- MIDI Panic button added.
+- Stereo Input/Output ASIO Channel selection works again.
+
+V1.26
+=====
+
+Release Date: 2006-05-08
+Changes:
+- Wave Player can now be inserted before or after the PlugIns; that means that
+  you can send wave files through effects.
+- Wave Player Auto-repeat introduced a little delay; corrected.
+- Load / save file selection from PlugIns sometimes failed; corrected.
+- Sending MIDI messages sometimes caused problems; corrected.
+
+V1.25
+=====
+
+Release Date: 2006-02-06
+Changes:
+- VST SDK 2.4 support
+  NB: while the programs should support all plugins written to the new
+  specification, they do NOT call the 64-bit processDoubleReplacing() method,
+  even if it's available.
+  The reason is simply that the internal signal processing is done with
+  32-bit floats; it would mean senseless conversions to and from 64-bit to
+  cover the 64-bit functionality. VSTHost and SAVIHost are designed to run
+  on older and slower machines, too, and I don't want to place heavy burdens
+  on these by doubling all buffer sizes for a negligible improvement in sound
+  quality.
+
+V1.24
+=====
+
+Release Date: 2005-12-12
+Changes:
+- Shell Plug-ins support enhanced.
+
+V1.23
+=====
+
+Release Date: 2005-10-13
+Changes:
+- Shell plug-ins can finally be loaded (i.e. the Waves plug-ins work).
+
+V1.22
+=====
+
+Release Date: 2005-10-03
+Changes:
+- The sample rate can now be changed if the wave output device allows it.
+
+V1.21
+=====
+
+Release Date: 2005-08-02
+Changes:
+- Improved Wave File Player/Recorder.
+  They are separate entities now; i.e. you can playback one file and record
+  its output, plus anything generated the Audio Input and/or loaded
+  VSTis/effects to another file.
+  It still follows a simple "tape recorder" paradigm and both player and
+  recorder are inserted into the audio stream just before it is sent to the
+  output device. Ping-pong recording is possible now.
+- A "just for fun" feature - like on an analog tape recorder, you can listen
+  to the audio data while it's rewinding or fast forwarding.
+  The Winding audio level can be adjusted; at -60dB, the feature is turned off
+  (saving some CPU cycles).
+
+V1.20
+=====
+
+Release Date: 2005-07-19
+Changes:
+- Added a Wave File Player/Recorder.
+  It can playback and record .WAV files in any bit rate up to 32 bit plus
+  floating-point, with a configurable number of up to 32 channels.
+  It follows a simple "tape recorder" paradigm and is simply inserted into
+  the audio stream just before it is sent to the output device.
+
+V1.19
+=====
+
+Release Date: 2005-04-29
+Changes:
+- SAVIHost can, in theory, load Shell plugins. This is untested.
+- Added a version without keyboard; this saves another 50KB for
+  plugins that either don't need a keyboard (effects) or come with
+  one (instruments).
+
+V1.18
+=====
+
+Release Date: 2005-03-29
+Changes:
+- In the Wave device configuration dialog, you can enter arbitrary buffer
+  sizes between 16 and 11025 by hand.
+
+V1.17
+=====
+
+Release Date: 2005-02-28
+Changes:
+- Extensive Reassign capabilities; you can define the input channels for
+  each loaded effect that has inputs, the overall input channel assignment,
+  and the overall output assignment.
+- Additional command line flags:
+    /noaudio - prevents loading of the Wave devices.
+    /nomidi - prevents loading of the MIDI devices.
+  These have been added since there are conditions where SAVIHost can die
+  upon program start, such as:
+    * Changed sound card, but the old ASIO driver is still there.
+    * Ruined Windows MME configuration, where the default Wave Mapper can't
+	  be opened or closed correctly.
+  This allows SAVIHost to come up even if something in the current configuration
+  is terribly defective. In previous versions, you had to clean the registry
+  in such cases.
+- The ASIO buffer size detection is much more robust and "intelligent" now.
+
+V1.16
+=====
+
+Release Date: 2005-02-06
+Changes:
+- Bug fix: FL Studio 5 and Spectrasonics Atmosphere have been reported not to
+  work with the previous versions - now they do.
+- The effects' edit windows can finally be scrolled if their size is reduced;
+  plus, there's a menu option that lets you turn off the automatic size
+  adjustment, since some effects simply don't tell the truth when asked how
+  big they want their edit area to be.
+- Added a little level meter to the status bar; can be turned off from the menu.
+- SAVIHost now remembers the position and size of the window between program
+  invocations.
+
+V1.15
+=====
+
+Release Date: 2005-01-29
+Changes:
+- Nasty bug fix - mono effects / synths could cause sudden death of the program
+  (see http://forum.hermannseib.com/viewtopic.php?t=34 for details).
+- Directly intertwined with that, mono output is now automatically converted to
+  pseudo-stereo (i.e. simply output on both channels).
+
+V1.14
+=====
+
+Release Date: 2005-01-18
+Changes:
+- Improved clipping behavior (previous versions created disastrous bzzzz sounds
+  if the output level went over +1dB).
+- Display of peak level in the status bar (updated every 750mS).
+
+V1.13
+=====
+
+Release Date: 2004-12-17
+Changes:
+- Instead of the MIDI Channel Mask, a much more flexible MIDI Filter concept
+  has been implemented (borrowed from Miditrix) that allows you to filter out
+  practically any kind of MIDI message; can be separately set for each loaded
+  Effect/VSTi.
+- Fixed a bug that emerged upon MIDI Program Change message processing
+  (see http://forum.hermannseib.com/viewtopic.php?t=27 for details).
+- The BPM reported to the loaded effects can now be set and (de-)activated in
+  both programs
+  (see http://forum.hermannseib.com/viewtopic.php?t=24 for details).
+
+V1.12
+=====
+
+Release Date: 2004-12-09
+Changes:
+- Use all available output channels now, if no stereo pair is selected.
+- Can adjust the process priority.
+
+V1.11
+=====
+
+Release Date: 2004-11-23
+Changes:
+- Added a workaround for bug in Reaktor 4 VSTi.
+- Load/save of .fxp's now works for formatless chunks.
+
+V1.10
+=====
+
+Release Date: 2004-11-18
+Changes:
+- Bug fix: Sample rates other than 44.1kHz are now supported (in previous
+  versions, you could set them through the ASIO Driver's Control Panel, but
+  they were not passed to the effects).
+- Keyboard bar is now resizable / dockable.
+
+V1.09
+=====
+
+Release Date: 2004-11-12
+Changes:
+- You can now load/save programs from/to .fxp files.
+- MME Wave device support has been sped up quite a bit.
+- You can set the BPM rate communicated to the loaded effect/VSTi.
+- The approximate CPU percentage spent in buffer processing is shown in the
+  status bar.
+
+V1.08
+=====
+
+Release Date: 2004-10-26
+Changes:
+- you can now select the used ASIO channels. i.e. you're not limited to the
+  first two channels any more. To select them, a new dialog has been added that
+  can be called from the menu as "Devices / ASIO Channel Selection".
+
+V1.07
+=====
+
+Release Date: 2004-10-22
+Changes:
+- A highly configurable keyboard bar has been added so that you can easily send
+  MIDI messages to VSTis that don't offer a built-in keyboard. You can play on
+  the simulated MIDI keyboard with the mouse or the PC keyboard.
+  The Left Mouse Button acts like a finger; as long as you keep it pressed, the
+  note is played.
+  The Right Mouse Button acts as a "sticky finger"; if you press it over a note,
+  this note keeps on playing until you release it by pressing the right mouse
+  button over it once again.
+
+V1.06
+=====
+
+Release Date: 2004-10-08
+Changes:
+- Improved MIDI handling.
+- Improved MME Wave handling.
+- Changes between MME and ASIO drivers work much better now.
+
+V1.05
+=====
+
+Release Date: 2004-10-08
+
+That's when SAVIHost was first mentioned on KvR - I didn't think about keeping
+a version history before that, since I had just sent some copies to interested
+persons upon personal request.
+
+H.G.Fortune, BTW, should receive proper credits - it was his idea to provide a
+stripped-down version of VSTHost for "instant standalone" creation.
+
+How should I have known that I'd compile SAVIHost's history about 10 years
+later...
+... and SAVIHost still lives on :-)

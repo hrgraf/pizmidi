@@ -1,0 +1,89 @@
+Licence agreement SAVIHost
+
+
+Please read carefully through the following software licence agreement. By installing the software,  you explicitly agree to be bound by the conditions of this agreement. If you do not accept the conditions of this agreement, you may not use the software.
+
+This free SAVIHost is intended exclusively for private use. You may copy the complete program package and pass it on to others for private use only.
+
+The free SAVIHost may not be used for commercial or professional purposes.
+
+
+ß1 Subject-matter of agreement
+
+1. This agreement refers to the computer programs, program specifications and user manual (hereinafter called "Software").
+2. The user is granted the right to use the Software free of charge.
+3. The computer program described in the user manual conforms to the latest technological standards. Hermann Seib (hereinafter called "Licensor") wishes to point out, however, that the latest technological standards do not guarantee software programs to function entirely without error in all applications and combinations.
+4. The Licensor only offers this Software for downloading from the userís server. The Licensor is not responsible for its transfer to the userís computer.
+
+
+ß2 Scope of application
+
+The Licensor grants the software user (hereinafter called "Licensee") a single, non-exclusive, personal right (hereinafter called "Licence") to use the Software on one computer system and in one location only as detailed below:
+1. The Licensee may install the Software on a private Personal Computer, load it into the user memory and run it accordingly.
+2. The Licensee may only use the Software for strictly private purposes. Institutes of education and public utilities are classed as commercial or business premises. Similarly, the Software may not be used in a home office for commercial or business purposes.
+3. The Licensee may copy the complete Software package in order to pass it on to a third party provided he/she does so free of charge, leaving the brand name, logo and copyright note intact and drawing attention to these conditions of use.
+4. The Licensee may make backups of the Software.
+
+
+ß3 Special restrictions
+
+The Licensee is forbidden in particular
+1. to reproduce the Software in whole or in part on the same or other media outside the limits indicated in ß2;
+2. to separate the components of the software in order to use them in more than one computer;
+3. to modify, translate, reverse-engineer, decompile, disassemble or generate works derived from the Software, or to reproduce, translate or modify the written material or generate works derived therefrom
+4. to pass on, rent or lease the Software to a third party for business purposes, or to use it in any other form for commercial purposes. This also applies to copies of the Software;
+5. to pass on the Software or copies thereof to a third party in return for payment. This software package may not be distributed on commercial data media (e.g. sampler CDs, shareware CDs, OEM versions) without the permission of Hermann Seib.
+
+
+ß4 Distribution of rights
+
+1. This Software is protected by copyright. All rights arising from the copyright are the property of the Licensor. The copyright covers in particular the program code, documentation, appearance, structure and organisation of the program files, program name, logos and other forms of representation within the Software.
+2. The Licensee is only granted the right to individual, private use of the Software. This does not imply conferral of any rights to the Software itself. The Licensor reserves all rights of publication, reproduction, editing and utilisation.
+
+
+ß5 Term of agreement
+
+1. The agreement is concluded for an indefinite period. The Licenseeís right to use the Software shall end automatically without notice in the event of non-compliance with any of the conditions of this agreement.
+2. On termination of the right of use, the Licensee is obliged to uninstall the Software from his/her computer system. He/she is also obliged to destroy all copies of the Software together with all written material and all copies thereof, including any modified copies.
+
+
+ß6 Warranty
+
+1. The right to use this Software is granted to the Licensee free of charge. It is not therefore subject to any sales or warranty legislation. The Licensee must accept this program in its currently available form, and is consequently not entitled to any warranty claims.
+
+
+ß7 Liability
+
+1. The Licensor guarantees the fitness of the product for the contractual purpose, as described in the program specification and user manual. No liability is accepted in respect of the suitability of the Software for the userís purposes and its compatibility with the userís existing software.
+2. Damage claims against Hermann Seib are excluded irrespective of legal basis, particularly on grounds of delayed performance or impossibility, neglect of advisory and accessory contractual obligations, pre-contractual duties, defective performance, violation of third-party industrial property rights and unlawful acts, unless Hermann Seib has acted with intent or gross negligence or unless the damage claims result from the failure to ensure a warranted quality.
+3. Insofar as grounds for liability on the part of Hermann Seib exist, the damage claim shall be limited to the extent of the foreseeable damage. Compensation for consequential damage such as loss of profit is excluded in all cases. This damage limitation clause shall not apply if the event giving rise to the damage was caused with intent or gross negligence by one of its legal representatives or senior employees.
+4. All damage claims against Hermann Seib shall expire by limitation six months after the receipt of the Software. This does not apply to claims based on unlawful acts.
+5. These provisions do not apply to claims based on product liability legislation.
+
+
+ß8 Damage minimisation obligation
+
+1. The Licensee is explicitly reminded that he/she must make backups of the data on his computer at adequate, regular intervals (normally once a week). Failure to do so shall constitute a breach of the Licenseeís damage minimisation obligation, and Hermann Seib shall not be liable for any resultant damage.
+2. The Licensee is explicitly reminded that he/she must not use the Software in hazardous environments in which non fault-tolerant operation is imperative (e.g. high-risk activities such as the operation of nuclear power installations, defence systems, air navigation or communication systems or life-support machines). Failure to observe this condition shall constitute a breach of the Licenseeís damage minimisation obligation, and Hermann Seib shall not be liable for any resultant damage.
+
+
+ß9 Contractual amendments and protective clause
+
+1. These conditions of use apply in the currently applicable version as published in the website [www.hermannseib.com].
+2. These General Conditions of Use shall still form part of the contract even if they differ from those of the Licensee, even where not expressly contradicted by Hermann Seib.
+
+
+ß10 Choice of law
+
+1. 	All legal relations between the parties, including the law of tort, shall be subject to the law of the Republic of Austria. The place of jurisdiction shall be Vienna.
+
+
+ß11 Final provisions
+
+1. All supplements to this contract, including this clause, must be made in writing.
+2. Should any provision of this agreement be or become invalid or unenforceable, this shall not affect the legal validity of the other provisions. In this case, the invalid or unenforceable provision shall be replaced where possible by a legitimate provision with an equivalent commercial intent.
+3. This agreement is subject to the law of the Republic of Austria. The place of jurisdiction shall be the domicile of the Licensor. All matters relating to the validity, interpretation and fulfilment of the contractual provisions shall be settled at the legal venue of the Licensor in the Republic of Austria.
+
+
+If you wish to contact the Licensor for any other reasons, please send a mail to office@hermannseib.com or write to:
+Hermann Seib, Donaufelderstraﬂe 57/1/2, A-1210 Wien, Austria, Europe.

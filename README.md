@@ -6,6 +6,7 @@ Currently includes:
   * midiUnifyChannel (a simple template for new modules)
   * midiProgramChange for Arturia MIDI keyboards
   * midiFromJoystick (translates XInput to MIDI)
+  * midiUartBridge for Arduino
 
 ## midiUnifyChannel 
 A simple template for new VST plug-ins. 
@@ -40,7 +41,17 @@ Proof-of-concept for Xbox360 controllers (XInput) with a hardwired mapping:
   
 If your Joystick/Gamepad/Game controller is not XInput compatible, use the free and configurable XOutput tool.
 
-## Download / install
+## midiUartBridge for Arduino
+This is a MIDI <-> USB <-> UART bridge implemented as VST2 plug-in.
+
+Using a virtual UART over USB, as typically used to program and communicate with Arduino and similar devices,
+it allows to send and receive MIDI events over USB, without any MIDI circuit/interface on the Arduino.
+
+A simple example for an Arduino Uno, working out of the box, is provided [here](doc/ArduMidiTest.ino).
+
+This is (in my opinion) a more robust repacement for the commonly used "Hairless MIDI to Serial Bridge" solution.
+
+## Download / install / use
 Download the Windows 10 VST2 plug-ins as either 32-bit or 64-bit DLL (binary) at https://github.com/hrgraf/pizmidi/releases.
 Copy the DLL and the .ini file to your VST Plug-in directory (for 64-bit e.g. to C:\Program Files\VSTPlugins).
 Use your favorite DAW, or any VST host, e.g. the free VSTHost or SAVIHost.

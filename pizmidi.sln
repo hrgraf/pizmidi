@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "midiFromJoystick", "midiFro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "midiUnifyChannel", "midiUnifyChannel\midiUnifyChannel.vcxproj", "{9427877E-B208-4C75-A9C3-539D275C7727}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "midiUartBridge", "midiUartBridge\midiUartBridge.vcxproj", "{E645A235-C134-4406-BCFA-5162E2550A50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -55,6 +57,18 @@ Global
 		{9427877E-B208-4C75-A9C3-539D275C7727}.Release|Win32.Build.0 = Release|Win32
 		{9427877E-B208-4C75-A9C3-539D275C7727}.Release|x64.ActiveCfg = Release|x64
 		{9427877E-B208-4C75-A9C3-539D275C7727}.Release|x64.Build.0 = Release|x64
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Debug|Win32.Build.0 = Debug|Win32
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Debug|x64.ActiveCfg = Debug|x64
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Debug|x64.Build.0 = Debug|x64
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Inst|Win32.ActiveCfg = Inst|Win32
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Inst|Win32.Build.0 = Inst|Win32
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Inst|x64.ActiveCfg = Inst|x64
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Inst|x64.Build.0 = Inst|x64
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Release|Win32.ActiveCfg = Release|Win32
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Release|Win32.Build.0 = Release|Win32
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Release|x64.ActiveCfg = Release|x64
+		{E645A235-C134-4406-BCFA-5162E2550A50}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -217,10 +217,10 @@ void MidiProgramChange::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventV
         //copying event "i" from input (with all its fields)
         VstMidiEvent me = inputs[0][i];
 
-        short status = me.midiData[0] & 0xf0;   // scraping  channel
-        short channel = me.midiData[0] & 0x0f;  // isolating channel (0-15)
-        //short data1 = me.midiData[1] & 0x7f;
-        //short data2 = me.midiData[2] & 0x7f;
+        short status  = me.midiData[0] & 0xF0;  // scraping  channel
+        short channel = me.midiData[0] & 0x0F;  // isolating channel (0-15)
+        //short data1 = me.midiData[1] & 0x7F;
+        //short data2 = me.midiData[2] & 0x7F;
 
         short filter = 0;
         short change = 0;

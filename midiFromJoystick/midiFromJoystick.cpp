@@ -254,7 +254,7 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
                 WORD changed = newButtons ^ lastButtons;
 
                 VstMidiEvent me;
-                me.deltaFrames = 0;
+                memset(&me, 0, sizeof(me));
 
                 SHORT channel = FLOAT_TO_CHANNEL015(fChannel) & 0x0F; //outgoing midi channel
 
@@ -268,7 +268,7 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
 
                     if (button & changed)
                     {
-                        me.midiData[0] = MIDI_NOTEON + channel;
+                        me.midiData[0] = MIDI_NOTEON | channel;
                         me.midiData[1] = note.key;
                         me.midiData[2] = (button & newButtons) ? note.vel : 0x00; // velocity
                         outputs[0].push_back(me);
@@ -310,7 +310,7 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
                 pitch += (1 << 13); // 14bit, zero offset
                 if (pitch != lastPitch)
                 {
-                    me.midiData[0] = MIDI_PITCHBEND + channel;
+                    me.midiData[0] = MIDI_PITCHBEND | channel;
                     me.midiData[1] =  pitch       & 0x7F; // lsb
                     me.midiData[2] = (pitch >> 7) & 0x7F; // msb
                     outputs[0].push_back(me);
@@ -320,7 +320,7 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
                 BYTE press = state.Gamepad.bRightTrigger / 2; // 7bit
                 if (press != lastPress)
                 {
-                    me.midiData[0] = MIDI_CHANNELPRESSURE + channel;
+                    me.midiData[0] = MIDI_CHANNELPRESSURE | channel;
                     me.midiData[1] = press & 0x7F;
                     me.midiData[2] = 0;
                     outputs[0].push_back(me);
@@ -330,7 +330,7 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
                 BYTE expr = state.Gamepad.bLeftTrigger / 2; // 7bit
                 if (expr != lastExpr)
                 {
-                    me.midiData[0] = MIDI_CONTROLCHANGE + channel;
+                    me.midiData[0] = MIDI_CONTROLCHANGE | channel;
                     me.midiData[1] = MIDI_MODULATION_WHEEL; // CC1
                     me.midiData[2] = expr & 0x7F;
                     outputs[0].push_back(me);

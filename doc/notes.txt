@@ -1,0 +1,3 @@
+Hi, I have built a VST2 plug-in as work-around for this issue. It converts the Arturia default CC MIDI commands of the Preset knob to MIDI program changes.
+Check it out at https://github.com/hrgraf/pizmidi and let me know if it works for you!
+

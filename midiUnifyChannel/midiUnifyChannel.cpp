@@ -192,14 +192,14 @@ void MidiUnifyChannel::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
         //copying event "i" from input (with all its fields)
         VstMidiEvent me = inputs[0][i];
 
-        short status = me.midiData[0] & 0xf0;   // scraping  channel
-        short channel = me.midiData[0] & 0x0f;  // isolating channel (0-15)
-        //short data1 = me.midiData[1] & 0x7f;
-        //short data2 = me.midiData[2] & 0x7f;
+        short status = me.midiData[0] & 0xF0;   // scraping  channel
+        //short channel = me.midiData[0] & 0x0F;  // isolating channel (0-15)
+        //short data1 = me.midiData[1] & 0x7F;
+        //short data2 = me.midiData[2] & 0x7F;
 
         // modify event
-        channel = FLOAT_TO_CHANNEL015(fChannel); //outgoing midi channel
-        me.midiData[0] = status | (channel & 0x0f);
+        short channel = FLOAT_TO_CHANNEL015(fChannel) & 0x0F; //outgoing midi channel
+        me.midiData[0] = status | channel;
 
         // output event
         if (fPower >= 0.5f)

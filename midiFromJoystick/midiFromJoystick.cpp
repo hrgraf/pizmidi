@@ -19,6 +19,7 @@ specific implementation by H.R.Graf
 enum
 {
     kChannel,
+    kXInput,
     kPower,
 
     kNumParams,
@@ -33,6 +34,7 @@ public:
     ~MidiFromJoystickProgram() {}
 private:
     float fChannel;
+    float fXInput;
     float fPower;
     char name[kVstMaxProgNameLen];
 };
@@ -56,6 +58,7 @@ public:
 
 protected:
     float fChannel;
+    float fXInput;
     float fPower;
 
     virtual void processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec *outputs, VstInt32 sampleFrames);
@@ -73,6 +76,7 @@ MidiFromJoystickProgram::MidiFromJoystickProgram()
 {
     // default Program Values
     fChannel = 0.0f;
+    fXInput = 0.0f;
     fPower = 1.0f;
 
     // default program name
@@ -91,7 +95,8 @@ MidiFromJoystick::MidiFromJoystick(audioMasterCallback audioMaster)
             if ((VstInt32)defaultBank->GetFxID() == PLUG_IDENT) {
                 for (int i = 0; i < kNumPrograms; i++) {
                     programs[i].fChannel = defaultBank->GetProgParm(i, 0);
-                    programs[i].fPower = defaultBank->GetProgParm(i, 1);
+                    programs[i].fXInput = defaultBank->GetProgParm(i, 1);
+                    programs[i].fPower = defaultBank->GetProgParm(i, 2);
                     strcpy(programs[i].name, defaultBank->GetProgramName(i));
                 }
             }
@@ -131,7 +136,8 @@ void MidiFromJoystick::setProgram(VstInt32 program)
 
     curProgram = program;
     setParameter(kChannel, ap->fChannel);
-    setParameter(kPower, ap->fPower);
+    setParameter(kXInput,  ap->fXInput);
+    setParameter(kPower,   ap->fPower);
 }
 
 //------------------------------------------------------------------------
@@ -164,7 +170,8 @@ void MidiFromJoystick::setParameter(VstInt32 index, float value) {
 
     switch (index) {
     case kChannel: fChannel = ap->fChannel = value; break;
-    case kPower:    fPower  = ap->fPower  = value;  break;
+    case kXInput:  fXInput  = ap->fXInput  = value; break;
+    case kPower:   fPower   = ap->fPower   = value;  break;
     }
 }
 
@@ -174,6 +181,7 @@ float MidiFromJoystick::getParameter(VstInt32 index) {
 
     switch (index) {
     case kChannel:   v = fChannel; break;
+    case kXInput:    v = fXInput;  break;
     case kPower:     v = fPower;   break;
     }
     return v;
@@ -183,6 +191,7 @@ float MidiFromJoystick::getParameter(VstInt32 index) {
 void MidiFromJoystick::getParameterName(VstInt32 index, char *label) {
     switch (index) {
     case kChannel:  strcpy(label, "Channel Out"); break;
+    case kXInput:   strcpy(label, "Joystick");    break;
     case kPower:    strcpy(label, "Power");       break;
     }
 }
@@ -191,6 +200,7 @@ void MidiFromJoystick::getParameterName(VstInt32 index, char *label) {
 void MidiFromJoystick::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
     case kChannel: sprintf(text, "%d", FLOAT_TO_CHANNEL015(fChannel) + 1); break;
+    case kXInput:  sprintf(text, "%d", roundToInt((fXInput) * 3.0f)  + 1); break;
     case kPower:   strcpy(text, (fPower < 0.5f) ? "off" : "on"); break;
     }
 }
@@ -239,10 +249,17 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
     static BYTE  lastPress = 0;
     static BYTE  lastExpr = 0;
 
+    static short timeOut = 0;
+    if (timeOut)
+    {
+        timeOut--;
+        return;
+    }
+
     XINPUT_STATE state;
     ZeroMemory(&state, sizeof(XINPUT_STATE));
-
-    if (XInputGetState(0, &state) == ERROR_SUCCESS)
+    SHORT joystick = roundToInt((fXInput) * 3.0f); // 0..3
+    if (XInputGetState(joystick, &state) == ERROR_SUCCESS)
     {
         if (state.dwPacketNumber != pktNum) // changed
         {
@@ -341,6 +358,11 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
 
             lastButtons = newButtons;
         }
+    }
+    else
+    {
+        dbg("XInput Joystick " << (joystick+1) << " not found");
+        timeOut = 2000;
     }
 }
 

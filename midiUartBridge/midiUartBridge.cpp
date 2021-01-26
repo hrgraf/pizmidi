@@ -48,18 +48,25 @@ static HANDLE openComPort(short nr)
 
     HANDLE hCom = ::CreateFile(name, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);
     if (hCom == INVALID_HANDLE_VALUE)
-        return hCom;
+    {
+        dbg("Failed to open COM" << nr);
+        return INVALID_HANDLE_VALUE;
+    }
 
     //Setting the Parameters for the SerialPort
     DCB dcbSerialParams = { 0 };
     dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
-    GetCommState(hCom, &dcbSerialParams);
+    if (!GetCommState(hCom, &dcbSerialParams))
+        dbg("Failed to get COM" << nr << " state");
+
 
     dcbSerialParams.BaudRate = CBR_115200;
     dcbSerialParams.ByteSize = 8;
     dcbSerialParams.StopBits = ONESTOPBIT;
     dcbSerialParams.Parity = NOPARITY;
-    SetCommState(hCom, &dcbSerialParams);
+    if (! SetCommState(hCom, &dcbSerialParams))
+        dbg("Failed to set COM" << nr << " state");
+
 
     //Setting Timeouts for non-blocking read
     COMMTIMEOUTS timeouts;
@@ -69,7 +76,8 @@ static HANDLE openComPort(short nr)
     timeouts.ReadTotalTimeoutMultiplier = 0;
     timeouts.WriteTotalTimeoutConstant = 0;
     timeouts.WriteTotalTimeoutMultiplier = 0;
-    SetCommTimeouts(hCom, &timeouts);
+    if (!SetCommTimeouts(hCom, &timeouts))
+        dbg("Failed to set COM" << nr << " timeouts");
 
     return hCom;
 }
@@ -78,8 +86,10 @@ static bool sendComPort(HANDLE hCom, char *msg, short msglen)
 {
     DWORD len = 0;
     if ((!WriteFile(hCom, msg, msglen, &len, NULL)) || (len != msglen))
+    {
+        dbg("Failed to write to COM");
         return false;
-
+    }
     return true;
 }
 
@@ -87,8 +97,10 @@ static short recvComPort(HANDLE hCom, char *msg, short maxlen)
 {
     DWORD len = 0;
     if (!ReadFile(hCom, msg, maxlen, &len, NULL))
+    {
+        dbg("Failed to read from COM");
         return 0;
-
+    }
     return (short)len;
 }
 
@@ -316,13 +328,20 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
     {
         if (curComPort) // close existing port
         {
+            dbg("Closing COM" << curComPort);
             closeComPort(hCom);
             hCom = INVALID_HANDLE_VALUE;
             curComPort = 0;
         }
 
-        if (reqComPort) // open requested port
+        static short timeOut = 0;
+        if (timeOut)
         {
+            timeOut--;
+        }
+        else if (reqComPort) // open requested port
+        {
+            dbg("Opening COM" << reqComPort);
             hCom = openComPort(reqComPort);
             if (hCom == INVALID_HANDLE_VALUE)
             {
@@ -331,6 +350,7 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
                 me.midiData[0] = MIDI_NOTEOFF | uartChannel; // "Error Message"
                 outputs[0].push_back(me);
 
+                timeOut = 2000;
             }
             else
                 curComPort = reqComPort;
@@ -361,7 +381,7 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
     static char recvBuf[10];
     static short recvPos = 0;
     
-    if (recvPos < sizeof(recvBuf))
+    if ((recvPos < sizeof(recvBuf)) && (hCom != INVALID_HANDLE_VALUE))
     {
         short len = recvComPort(hCom, &recvBuf[recvPos], sizeof(recvBuf) - recvPos);
         recvPos += len;

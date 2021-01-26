@@ -16,7 +16,7 @@ PizMidi::PizMidi(audioMasterCallback audioMaster, VstInt32 numPrograms, VstInt32
     char* host;
     host = new char[kVstMaxVendorStrLen+1];
     bool inst = false;
-	bool ignoreDefault;
+	bool ignoreDefault = false;
     if (getHostVendorString(host)) {
         getHostStuff(host,inst,numoutputs,ignoreDefault);
     }

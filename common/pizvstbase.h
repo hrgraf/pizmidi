@@ -12,11 +12,11 @@
 #endif
 
 #ifdef _DEBUG
-#define dbg(i) std::cout << i << "\n";
-#define dbg2(i) std::cout << i;
+#define dbg(i)  { std::cout << i << "\n"; }
+#define dbg2(i) { std::cout << i; }
 #else 
-#define dbg(i)
-#define dbg2(i)
+#define dbg(i)  {}
+#define dbg2(i) {}
 #endif
 
 

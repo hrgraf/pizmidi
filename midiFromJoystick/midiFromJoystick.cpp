@@ -200,7 +200,7 @@ void MidiFromJoystick::getParameterName(VstInt32 index, char *label) {
 void MidiFromJoystick::getParameterDisplay(VstInt32 index, char *text) {
     switch (index) {
     case kChannel: sprintf(text, "%d", FLOAT_TO_CHANNEL015(fChannel) + 1); break;
-    case kXInput:  sprintf(text, "%d", roundToInt((fXInput) * 3.0f)  + 1); break;
+    case kXInput:  sprintf(text, "%d", roundToInt(fXInput * 3.0f)  + 1); break;
     case kPower:   strcpy(text, (fPower < 0.5f) ? "off" : "on"); break;
     }
 }
@@ -260,7 +260,7 @@ void MidiFromJoystick::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVe
 
     XINPUT_STATE state;
     ZeroMemory(&state, sizeof(XINPUT_STATE));
-    SHORT joystick = roundToInt((fXInput) * 3.0f); // 0..3
+    SHORT joystick = roundToInt(fXInput * 3.0f); // 0..3
     if (XInputGetState(joystick, &state) == ERROR_SUCCESS)
     {
         if (state.dwPacketNumber != pktNum) // changed

@@ -4,7 +4,8 @@ original framework by Reuben Vinal
 specific implementation by H.R.Graf
 -----------------------------------------------------------------------------*/
 #include "../common/PizMidi.h"
-#include <stdlib.h>
+#include <cstdlib>
+#include <vector> 
 
 enum
 {
@@ -33,13 +34,7 @@ static short getMidiEvLen(short status)
     return len;
 }
 
-static void closeComPort(HANDLE hCom)
-{
-    if (hCom == INVALID_HANDLE_VALUE)
-        return;
-
-    CloseHandle(hCom);
-}
+//-------------------------------------------------------------------------------------------------------
 
 static HANDLE openComPort(short nr)
 {
@@ -93,25 +88,66 @@ static bool sendComPort(HANDLE hCom, char *msg, short msglen)
     return true;
 }
 
-static short recvComPort(HANDLE hCom, char *msg, short maxlen)
+static bool recvComPort(HANDLE hCom, char *msg, short maxlen, short& recvlen)
 {
     DWORD len = 0;
+    recvlen = 0;
     if (!ReadFile(hCom, msg, maxlen, &len, NULL))
     {
         dbg("Failed to read from COM");
-        return 0;
+        return false;
     }
-    return (short)len;
+    recvlen = (short)len;
+    return true;
 }
 
+static void closeComPort(HANDLE hCom)
+{
+    if (hCom == INVALID_HANDLE_VALUE)
+        return;
 
+    CloseHandle(hCom);
+}
 
 //-------------------------------------------------------------------------------------------------------
 static short reqComPort = 0;
+static std::vector<short> comPorts = {};
+
+static void listComPorts()
+{
+    int num_ports = 0;
+    comPorts.clear();
+
+    dbg("listComPorts:");
+    char buf[65535];
+    long len = QueryDosDevice(0, buf, sizeof(buf));
+
+    for (long n = 0; n < len; n++)
+    {
+        if (strncmp(&buf[n], "COM", 3) == 0)
+        {
+            int port_num = atoi(&buf[n + 3]);
+            dbg("  COM" << port_num);
+            num_ports++;
+            comPorts.push_back(port_num);
+        }
+
+        // find next null pointer
+        while (buf[n])
+            n++;
+    }
+    dbg("Found " << num_ports << " COM ports");
+    sort(comPorts.begin(), comPorts.end());
+}
 
 static short getComPortNr(float fComPort)
 {
-    short nr = 5; // fixme
+    short pos = 0, nr = 0;
+    short sz = comPorts.size();
+    if (sz)
+        pos = roundToInt(fComPort * sz); // 0..sz
+    if (pos > 0)
+        nr = comPorts.at(pos - 1);
     reqComPort = nr; // save
     return nr;
 }
@@ -195,6 +231,7 @@ MidiUartBridge::MidiUartBridge(audioMasterCallback audioMaster)
     : PizMidi(audioMaster, kNumPrograms, kNumParams), programs(0)
 {
     hCom = INVALID_HANDLE_VALUE;
+    listComPorts();
 
     programs = new MidiUartBridgeProgram[numPrograms];
 
@@ -324,6 +361,13 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
     static short curComPort = 0;
     short uartChannel = (FLOAT_TO_CHANNEL015(fChannel) & 0x0F); // midi channel to send to uart
 
+    static DWORD timeOut = 0;
+    if (timeOut)
+    {
+        if (GetTickCount() > timeOut)
+            timeOut = 0;
+    }
+
     if (reqComPort != curComPort) // change com port
     {
         if (curComPort) // close existing port
@@ -333,14 +377,8 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
             hCom = INVALID_HANDLE_VALUE;
             curComPort = 0;
         }
-
-        static DWORD timeOut = 0;
-        if (timeOut)
-        {
-            if (GetTickCount() > timeOut)
-                timeOut = 0;
-        }
-        else if (reqComPort) // open requested port
+        
+        if (reqComPort && (! timeOut)) // open requested port
         {
             dbg("Opening COM" << reqComPort);
             hCom = openComPort(reqComPort);
@@ -351,11 +389,18 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
                 me.midiData[0] = MIDI_NOTEOFF | uartChannel; // "Error Message"
                 outputs[0].push_back(me);
 
+                listComPorts();
                 timeOut = GetTickCount() + 2000; // 2s
             }
             else
                 curComPort = reqComPort;
         }
+    }
+
+    if ((! reqComPort) && (! timeOut))
+    {
+        listComPorts();
+        timeOut = GetTickCount() + 2000; // 2s
     }
 
     // process incoming events (of first input)
@@ -373,18 +418,30 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
             short len = getMidiEvLen(status);
             if (len > 0)
             {
-                sendComPort(hCom, me.midiData, len);
+                if (!sendComPort(hCom, me.midiData, len))
+                {
+                    closeComPort(hCom);
+                    hCom = INVALID_HANDLE_VALUE;
+                    curComPort = 0;
+                }
             }
         }
     }
 
     // process incoming UART data
-    static char recvBuf[10];
+    static char recvBuf[20];
     static short recvPos = 0;
     
     if ((recvPos < sizeof(recvBuf)) && (hCom != INVALID_HANDLE_VALUE))
     {
-        short len = recvComPort(hCom, &recvBuf[recvPos], sizeof(recvBuf) - recvPos);
+        short len = 0;
+        if (! recvComPort(hCom, &recvBuf[recvPos], sizeof(recvBuf) - recvPos, len))
+        {
+            closeComPort(hCom);
+            hCom = INVALID_HANDLE_VALUE;
+            curComPort = 0;
+        }
+
         recvPos += len;
     }
 

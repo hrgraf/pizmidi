@@ -24,7 +24,7 @@ static short getMidiEvLen(short status)
     short len = 0;
     switch (status & 0xF0)
     {
-    case MIDI_NOTEOFF:         len = 2; break;
+    case MIDI_NOTEOFF:         len = 3; break;
     case MIDI_NOTEON:          len = 3; break;
     case MIDI_POLYKEYPRESSURE: len = 3; break;
     case MIDI_PROGRAMCHANGE:   len = 2; break;
@@ -473,7 +473,7 @@ void MidiUartBridge::processMidiEvents(VstMidiEventVec *inputs, VstMidiEventVec 
                 i++; // skip
         }
 
-        if (i == recvPos)
+        if (i >= recvPos)
         {
             recvPos = 0; // all consumed
         }

@@ -32,7 +32,8 @@ So this VST plug-in maps also the default Arturia MIDI CC commands of the "Categ
 (The expected MIDI CC ID for CategoryEnc/CategoryBtn/PresetEnc/PresetBtn are 112/113/114/115. This is the default configuration at least on my Arturia Laboratory MIDI keyboard.)
 
 ## midiFromJoystick (translates XInput to MIDI)
-Use your Joystick/Gamepad/Game controller to generate MIDI events (Note On/Off, Pitch Bench, Sustain, Portamento, Expression Controller, Program Change, Bank Select).
+Use your Joystick/Gamepad/Game controller to generate MIDI events (Note On/Off, Pitch Bench, Sustain, Portamento, Expression Controller, Program Change, Bank Select),
+directly in your DAW / VST host.
 
 Proof-of-concept for Xbox360 controllers (XInput) with a hardwired mapping: 
   * play notes with buttons A/B/X/Y plus the DPAD (8 notes from C4 to C5)
@@ -43,16 +44,16 @@ If your Joystick/Gamepad/Game controller is not XInput compatible, use the free 
 
 ## midiUartBridge for Arduino
 This is a MIDI <-> USB <-> UART bridge implemented as VST2 plug-in.
+A more robust alternative to tools like the commonly used "Hairless MIDI to Serial Bridge".
 
-Using a virtual UART over USB, as typically used to program and communicate with Arduino and similar devices,
+Using a virtual UART over USB, as typically used to program and communicate with Arduino Uno and similar devices,
 it allows to send and receive MIDI events over USB, without any MIDI circuit/interface on the Arduino.
 
 A simple example for an Arduino Uno, working out of the box, is provided [here](doc/ArduMidiTest.ino).
-
-This is (in my opinion) a more robust repacement for the commonly used "Hairless MIDI to Serial Bridge" solution.
+The example works also on Arduino Leonardo compatible boards (e.g. Pro Micro), but since they implement USB-MIDI
+directly, the midiUartBridge or other hairy tools are not needed...
 
 ## Download / install / use
 Download the Windows 10 VST2 plug-ins as either 32-bit or 64-bit DLL (binary) at https://github.com/hrgraf/pizmidi/releases.
 Copy the DLL and the .ini file to your VST Plug-in directory (for 64-bit e.g. to C:\Program Files\VSTPlugins).
 Use your favorite DAW, or any VST host, e.g. the free VSTHost or SAVIHost.
-

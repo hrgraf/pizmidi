@@ -1,6 +1,6 @@
 # pizmidi
 Simple and free MIDI plug-ins based on VST2 SDK and pizmidi framework/examples.
-Without dedicated GUI, but parameters can get edited from the VST host.
+Without dedicated GUI, but parameters can get edited from the VST host (e.g. the free Cantabile lite allows MIDI routing).
 
 Currently includes:
   * midiUnifyChannel (a simple template for new modules)
